@@ -7,7 +7,12 @@ export async function crearFacturaCertificada(req, res) {
   }
 
   const xmlString = req.file.buffer.toString('utf-8');
-  const { pdf } = await certificarFactura(xmlString);
+  const { pdf, datosCertificacion } = await certificarFactura(xmlString);
 
-  res.status(201).type('application/pdf').send(pdf);
+  res.status(201);
+  res.set('X-Numero-Autorizacion', datosCertificacion.numeroAutorizacion);
+  res.set('X-Serie', datosCertificacion.serie);
+  res.set('X-Numero-Dte', datosCertificacion.numeroDte);
+  res.set('X-Fecha-Certificacion', datosCertificacion.fechaCertificacion);
+  res.type('application/pdf').send(pdf);
 }

@@ -21,6 +21,9 @@ describe('POST /api/facturas', () => {
     expect(res.headers['content-type']).toBe('application/pdf');
     expect(Buffer.isBuffer(res.body)).toBe(true);
     expect(res.body.subarray(0, 5).toString()).toBe('%PDF-');
+    expect(res.headers['x-numero-autorizacion']).toBeTruthy();
+    expect(res.headers['x-serie']).toBeTruthy();
+    expect(res.headers['x-numero-dte']).toMatch(/^\d{9}$/);
   });
 
   it('responde 400 si no se adjunta ningún archivo', async () => {
