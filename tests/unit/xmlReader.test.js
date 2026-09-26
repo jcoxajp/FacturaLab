@@ -187,6 +187,27 @@ const XML_RECEPTOR_CONSUMIDOR_FINAL = `<?xml version="1.0"?>
   </dte:SAT>
 </dte:GTDocumento>`;
 
+const XML_CF_MAYOR_A_2500 = `<?xml version="1.0"?>
+<dte:GTDocumento xmlns:dte="http://www.sat.gob.gt/dte/fel/0.2.0">
+  <dte:SAT>
+    <dte:DTE>
+      <dte:DatosEmision>
+        <dte:Emisor NITEmisor="12345679" NombreEmisor="Emisor Demo"/>
+        <dte:Receptor IDReceptor="CF" NombreReceptor="Consumidor Final"/>
+        <dte:Items>
+          <dte:Item>
+            <dte:Descripcion>Producto A</dte:Descripcion>
+            <dte:Cantidad>1</dte:Cantidad>
+            <dte:PrecioUnitario>3000.00</dte:PrecioUnitario>
+            <dte:Total>3000.00</dte:Total>
+          </dte:Item>
+        </dte:Items>
+        <dte:Totales><dte:GranTotal>3000.00</dte:GranTotal></dte:Totales>
+      </dte:DatosEmision>
+    </dte:DTE>
+  </dte:SAT>
+</dte:GTDocumento>`;
+
 const XML_ITEM_TOTAL_INVALIDO = `<?xml version="1.0"?>
 <dte:GTDocumento xmlns:dte="http://www.sat.gob.gt/dte/fel/0.2.0">
   <dte:SAT>
@@ -290,5 +311,10 @@ describe('leerFacturaXml', () => {
   it('acepta "CF" como receptor (consumidor final, sin NIT)', () => {
     const datos = leerFacturaXml(XML_RECEPTOR_CONSUMIDOR_FINAL);
     expect(datos.idReceptor).toBe('CF');
+  });
+
+  it('lanza XmlInvalidoError si el receptor es "CF" y el total supera Q2500', () => {
+    expect(() => leerFacturaXml(XML_CF_MAYOR_A_2500)).toThrow(XmlInvalidoError);
+    expect(() => leerFacturaXml(XML_CF_MAYOR_A_2500)).toThrow(/requieren el NIT del receptor/);
   });
 });

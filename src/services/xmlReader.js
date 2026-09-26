@@ -3,6 +3,7 @@ import { XmlInvalidoError } from '../errors/XmlInvalidoError.js';
 import { esConsumidorFinal, esNitValido } from './nit.js';
 
 const TOLERANCIA_TOTAL = 0.01;
+const LIMITE_CONSUMIDOR_FINAL = 2500;
 
 const parser = new XMLParser({
   ignoreAttributes: false,
@@ -102,6 +103,12 @@ export function leerFacturaXml(xmlString) {
   if (Math.abs(sumaItems - granTotal) > TOLERANCIA_TOTAL) {
     throw new XmlInvalidoError(
       `El GranTotal (${granTotal}) no coincide con la suma de los items (${sumaItems.toFixed(2)})`,
+    );
+  }
+
+  if (granTotal > LIMITE_CONSUMIDOR_FINAL && esConsumidorFinal(idReceptor)) {
+    throw new XmlInvalidoError(
+      `Las facturas mayores a Q${LIMITE_CONSUMIDOR_FINAL} requieren el NIT del receptor (no se admite "CF")`,
     );
   }
 

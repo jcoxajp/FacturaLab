@@ -34,11 +34,11 @@ export async function certificarDocumento(datosFactura, { delayMs = 300 } = {}) 
     throw new ErrorCertificacion(`NIT emisor no autorizado para operar: ${datosFactura.nitEmisor}`);
   }
 
-  const numeroAutorizacion = randomUUID();
+  const numeroAutorizacion = randomUUID().toUpperCase();
 
   return {
     numeroAutorizacion,
-    serie: numeroAutorizacion.split('-')[0].toUpperCase(),
+    serie: numeroAutorizacion.split('-')[0],
     numeroDte: generarNumeroDte(),
     fechaCertificacion: new Date().toISOString(),
   };

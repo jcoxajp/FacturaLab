@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { certificarDocumento } from '../../src/services/certificadorClient.js';
 import { ErrorCertificacion } from '../../src/errors/ErrorCertificacion.js';
 
-const UUID_REGEXP = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const UUID_REGEXP = /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/;
 
 const datosFactura = (nitEmisor) => ({
   nitEmisor,
@@ -16,7 +16,7 @@ describe('certificarDocumento', () => {
     const resultado = await certificarDocumento(datosFactura('12345679'), { delayMs: 0 });
 
     expect(resultado.numeroAutorizacion).toMatch(UUID_REGEXP);
-    expect(resultado.serie).toBe(resultado.numeroAutorizacion.split('-')[0].toUpperCase());
+    expect(resultado.serie).toBe(resultado.numeroAutorizacion.split('-')[0]);
     expect(resultado.numeroDte).toMatch(/^\d{9}$/);
     expect(() => new Date(resultado.fechaCertificacion).toISOString()).not.toThrow();
   });

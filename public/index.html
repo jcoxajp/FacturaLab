@@ -9,8 +9,8 @@
 <body class="bg-slate-50 min-h-screen text-slate-800">
   <div class="max-w-3xl mx-auto py-10 px-4">
     <header class="mb-8 text-center">
-      <h1 class="text-3xl font-bold text-slate-900">FacturaLab</h1>
-      <p class="text-slate-500 mt-1">Simulador académico de certificación de facturas electrónicas (DTE-FEL). No es un certificador real de la SAT.</p>
+      <h1 class="text-3xl font-bold text-indigo-600">FacturaLab</h1>
+      <p class="text-slate-500">Certificador de facturas electrónicas (DTE-FEL)</p>
     </header>
 
     <ol class="flex items-center justify-center mb-10" id="stepper">
@@ -34,7 +34,10 @@
     <section id="paso-datos" class="bg-white rounded-lg shadow p-6 space-y-6">
       <div class="flex justify-between items-center">
         <h2 class="text-lg font-semibold">Datos de la factura</h2>
-        <button type="button" id="btn-ejemplo" class="text-sm text-indigo-600 hover:underline">Usar datos de ejemplo</button>
+        <div class="flex gap-4">
+          <button type="button" id="btn-limpiar" class="text-sm text-slate-500 hover:underline">Nueva factura</button>
+          <button type="button" id="btn-ejemplo" class="text-sm text-indigo-600 hover:underline">Usar datos de ejemplo</button>
+        </div>
       </div>
 
       <fieldset class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -67,12 +70,19 @@
         </div>
         <div class="sm:col-span-2">
           <label class="block text-sm text-slate-600 mb-1">Dirección (opcional)</label>
-          <input type="text" id="receptor-direccion" class="w-full border rounded px-3 py-2" placeholder="Dirección del cliente" />
+          <input type="text" id="receptor-direccion" class="w-full border rounded px-3 py-2" value="Ciudad" />
         </div>
       </fieldset>
 
       <fieldset>
         <legend class="text-sm font-semibold text-slate-600 mb-2">Items</legend>
+        <div class="grid grid-cols-12 gap-2 text-xs font-semibold text-slate-500 px-1 mb-1">
+          <span class="col-span-5">Descripción</span>
+          <span class="col-span-2">Cantidad</span>
+          <span class="col-span-2">P. Unitario (Q)</span>
+          <span class="col-span-2 text-right">Subtotal (Q)</span>
+          <span class="col-span-1"></span>
+        </div>
         <div id="items-lista" class="space-y-2"></div>
         <button type="button" id="btn-agregar-item" class="mt-2 text-sm text-indigo-600 hover:underline">+ Agregar item</button>
       </fieldset>
@@ -81,7 +91,7 @@
         <span class="text-lg font-semibold">Total: Q<span id="total-factura">0.00</span></span>
       </div>
 
-      <p id="errores-formulario" class="text-sm text-red-600 whitespace-pre-line hidden"></p>
+      <p id="errores-formulario" class="text-sm text-red-600 whitespace-pre-line" hidden></p>
 
       <div class="flex justify-end">
         <button type="button" id="btn-vista-previa" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
@@ -93,7 +103,7 @@
     <!-- Paso 2: Vista previa del XML -->
     <section id="paso-preview" class="bg-white rounded-lg shadow p-6 space-y-4" hidden>
       <h2 class="text-lg font-semibold">Vista previa del XML generado</h2>
-      <pre id="xml-preview" class="bg-slate-900 text-slate-100 text-xs p-4 rounded overflow-x-auto max-h-96"></pre>
+      <pre id="xml-preview" class="bg-slate-900 text-slate-100 text-xs p-4 rounded overflow-x-auto max-h-[36rem]"></pre>
       <div class="flex justify-between">
         <button type="button" id="btn-volver-editar" class="border border-slate-300 px-4 py-2 rounded hover:bg-slate-100">
           Volver a editar
@@ -129,7 +139,7 @@
 
       <div class="flex justify-start border-t pt-4">
         <button type="button" id="btn-nueva-factura" class="border border-slate-300 px-4 py-2 rounded hover:bg-slate-100">
-          Volver a editar
+          Nueva factura
         </button>
       </div>
     </section>
