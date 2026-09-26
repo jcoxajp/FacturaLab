@@ -4,6 +4,10 @@ import { ErrorCertificacion } from '../errors/ErrorCertificacion.js';
 const NIT_RECHAZO = '00000000';
 const NIT_TIMEOUT = '99999994';
 
+// Entidad certificadora ficticia (NIT válido, pero inventado para la demo).
+const CERTIFICADOR_NOMBRE = 'FacturaLab S.A.';
+const CERTIFICADOR_NIT = '567890120';
+
 function esperar(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -41,5 +45,7 @@ export async function certificarDocumento(datosFactura, { delayMs = 300 } = {}) 
     serie: numeroAutorizacion.split('-')[0],
     numeroDte: generarNumeroDte(),
     fechaCertificacion: new Date().toISOString(),
+    certificadorNombre: CERTIFICADOR_NOMBRE,
+    certificadorNit: CERTIFICADOR_NIT,
   };
 }

@@ -119,8 +119,10 @@ export function leerFacturaXml(xmlString) {
     nitEmisor,
     nombreEmisor: emisor.NombreEmisor ?? '',
     nombreComercialEmisor: emisor.NombreComercial ?? '',
+    direccionEmisor: emisor.DireccionEmisor?.Direccion ?? '',
     idReceptor,
     nombreReceptor: receptor.NombreReceptor ?? '',
+    direccionReceptor: receptor.DireccionReceptor?.Direccion ?? '',
     items: itemsFactura,
     granTotal,
   };

@@ -19,6 +19,8 @@ describe('certificarDocumento', () => {
     expect(resultado.serie).toBe(resultado.numeroAutorizacion.split('-')[0]);
     expect(resultado.numeroDte).toMatch(/^\d{9}$/);
     expect(() => new Date(resultado.fechaCertificacion).toISOString()).not.toThrow();
+    expect(resultado.certificadorNombre).toBe('FacturaLab S.A.');
+    expect(resultado.certificadorNit).toBe('567890120');
   });
 
   it('lanza ErrorCertificacion (rechazo) cuando el NIT emisor es el gatillo de rechazo', async () => {

@@ -236,8 +236,10 @@ describe('leerFacturaXml', () => {
     expect(datos.tipo).toBe('FACT');
     expect(datos.nitEmisor).toBe('12345679');
     expect(datos.nombreEmisor).toBe('DEMO SOCIEDAD ANONIMA');
+    expect(datos.direccionEmisor).toBe('AVENIDA LA BRIGADA');
     expect(datos.idReceptor).toBe('12521337');
     expect(datos.nombreReceptor).toBe('PRODUCTOR EJEMPLO');
+    expect(datos.direccionReceptor).toBe('CIUDAD');
     expect(datos.items).toHaveLength(2);
     expect(datos.items[0]).toMatchObject({
       descripcion: 'Producto Demo A',
