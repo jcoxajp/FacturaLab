@@ -2,22 +2,23 @@
 
 Simulador de certificador de facturas electrónicas (DTE-FEL, Guatemala). Es una **demo académica**: no hay integración real con SAT, GFACE ni ningún certificador autorizado. El flujo es:
 
-1. Se sube un XML de factura (formato DTE-FEL, `Tipo="FACT"`).
-2. Se valida su estructura y sus datos.
-3. Se "certifica" (simulación local, sin llamadas de red reales).
-4. Se genera el PDF de la factura certificada.
+1. En la web armás los datos de la factura (emisor, receptor, items) con un stepper — o le enviás tu propio XML directo a la API.
+2. Se valida la estructura y las reglas de negocio (NIT con dígito verificador, total contra la suma de los items, NIT obligatorio si el total supera Q2,500).
+3. Se "certifica" (simulación local, sin llamadas de red reales — hay NITs "gatillo" para forzar un rechazo o un timeout, ver más abajo).
+4. Se genera el PDF de la factura certificada (con tabla, IVA por línea y código QR).
 
 ## Estado del proyecto
 
-En construcción. Progreso:
+MVP funcional. Progreso:
 
 - [x] Scaffold del proyecto (config, estructura de carpetas)
-- [ ] Lectura y validación del XML de la factura
-- [ ] Certificación simulada
-- [ ] Generación del PDF
-- [ ] API REST (Express)
-- [ ] Frontend
+- [x] Lectura y validación del XML de la factura
+- [x] Certificación simulada
+- [x] Generación del PDF
+- [x] API REST (Express)
+- [x] Frontend (formulario con stepper)
 - [ ] CI (GitHub Actions)
+- [ ] Feature para el code review en vivo (historial en memoria)
 
 ## Instalación
 
@@ -30,6 +31,20 @@ npm ci
 ```bash
 npm run dev
 ```
+
+Abrí `http://localhost:3000` para usar el formulario, o llamá directo a la API:
+
+```bash
+curl -F "factura=@fixtures/factura-valida.xml" http://localhost:3000/api/facturas -o factura.pdf
+```
+
+## Validaciones y reglas de negocio
+
+- El XML debe seguir el formato DTE-FEL (`Tipo="FACT"`), con NIT del emisor y del receptor (o `"CF"` en el receptor).
+- Los NIT se validan con el dígito verificador real (algoritmo de complemento 11).
+- El `GranTotal` debe coincidir con la suma de los items.
+- Facturas mayores a Q2,500 no admiten `"CF"` como receptor — requieren NIT real.
+- NITs "gatillo" del emisor para probar los distintos resultados de la certificación simulada: `00000000` (rechazo), `99999994` (timeout), cualquier otro NIT válido (éxito).
 
 ## Pruebas
 
@@ -49,17 +64,24 @@ npm run lint
 
 ```
 src/
-├── app.js                # configuración de Express (middlewares, rutas, estáticos)
-├── server.js              # bootstrap / listen
-├── routes/                # definición de endpoints
-├── controllers/           # capa HTTP: valida entrada, llama servicios, arma la respuesta
-├── services/               # lógica de dominio (lectura de XML, certificación simulada, generación de PDF)
-├── errors/                 # errores de dominio
-└── middlewares/            # multer, manejo de errores
-public/                    # frontend estático (HTML + Tailwind CDN + JS vanilla)
+├── app.js                        # configuración de Express (estáticos, rutas, error handler)
+├── server.js                     # bootstrap / listen
+├── routes/facturas.routes.js     # POST /api/facturas
+├── controllers/facturas.controller.js
+├── services/
+│   ├── xmlReader.js               # parseo y validación del XML (DTE-FEL)
+│   ├── nit.js                     # dígito verificador de NIT + excepción "CF"
+│   ├── certificadorClient.js      # certificación simulada (éxito/rechazo/timeout)
+│   ├── pdfGenerator.js            # generación del PDF certificado
+│   └── certificacionService.js    # orquestador: leer -> certificar -> PDF
+├── errors/                        # XmlInvalidoError, ArchivoInvalidoError, ErrorCertificacion
+└── middlewares/                   # multer (upload.js), errorHandler.js
+public/
+├── index.html                     # formulario con stepper (Datos -> Vista previa -> Resultado)
+└── js/app.js                      # arma el XML, lo valida, lo envía a /api/facturas
 tests/
-├── unit/
-├── integration/
-└── e2e/
-fixtures/                  # XML de ejemplo para pruebas y demo
+├── unit/          # xmlReader, nit, certificadorClient, pdfGenerator
+├── integration/   # certificacionService (flujo completo)
+└── e2e/           # app.test.js (Supertest sobre /api/facturas)
+fixtures/          # XML de ejemplo para pruebas y demo
 ```

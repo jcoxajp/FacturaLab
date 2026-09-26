@@ -184,8 +184,7 @@ export async function generarPdfFactura(datosFactura, datosCertificacion) {
     doc.text(`Moneda: ${datosFactura.moneda || 'GTQ'}`, columnaDerecha, doc.y);
     const yFinAutorizacion = doc.y;
 
-    // Altura real de la columna más alta (no un colchón fijo, que dejaba un
-    // espacio muerto grande cuando el bloque de la derecha era más corto).
+    // Las dos columnas pueden tener distinta cantidad de líneas.
     doc.y = Math.max(yFinEmisor, yFinAutorizacion);
     doc.moveDown(0.6);
 

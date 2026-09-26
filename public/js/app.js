@@ -246,9 +246,8 @@ function validarFormulario() {
 
 function construirXml({ nitEmisor, nombreEmisor, nombreReceptor, nitReceptor, direccion }) {
   const total = calcularTotal().toFixed(2);
-  // UTC real (igual que fechaCertificacion en certificadorClient.js): formatearFecha()
-  // ya la convierte a hora local al mostrarla. Antes se le pegaba la etiqueta
-  // "-06:00" a los dígitos UTC sin convertirlos, adelantando la fecha 6 horas.
+  // UTC real, igual que fechaCertificacion en certificadorClient.js: formatearFecha()
+  // la convierte a hora local al mostrarla.
   const fecha = new Date().toISOString();
 
   const itemsXml = items
