@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dte:GTDocumento Version="0.1" xmlns:dte="http://www.sat.gob.gt/dte/fel/0.2.0">
+<dte:SAT ClaseDocumento="dte">
+<dte:DTE ID="DatosCertificados">
+<dte:DatosEmision ID="DatosEmision">
+<dte:DatosGenerales CodigoMoneda="GTQ" FechaHoraEmision="2026-09-25T20:00:00-06:00" Tipo="FACT"/>
+<dte:Emisor AfiliacionIVA="GEN" CodigoEstablecimiento="1" NombreComercial="DISTRIBUIDORA DEMO" NombreEmisor="DEMO SOCIEDAD ANONIMA">
+<dte:DireccionEmisor>
+<dte:Direccion>AVENIDA LA BRIGADA</dte:Direccion>
+<dte:CodigoPostal>01012</dte:CodigoPostal>
+<dte:Municipio>GUATEMALA</dte:Municipio>
+<dte:Departamento>GUATEMALA</dte:Departamento>
+<dte:Pais>GT</dte:Pais>
+</dte:DireccionEmisor>
+</dte:Emisor>
+<dte:Receptor IDReceptor="12521337" NombreReceptor="PRODUCTOR EJEMPLO">
+<dte:DireccionReceptor>
+<dte:Direccion>CIUDAD</dte:Direccion>
+<dte:CodigoPostal>01001</dte:CodigoPostal>
+<dte:Municipio>GUATEMALA</dte:Municipio>
+<dte:Departamento>GUATEMALA</dte:Departamento>
+<dte:Pais>GT</dte:Pais>
+</dte:DireccionReceptor>
+</dte:Receptor>
+<dte:Items>
+<dte:Item BienOServicio="B" NumeroLinea="1">
+<dte:Cantidad>2.00</dte:Cantidad>
+<dte:UnidadMedida>UNI</dte:UnidadMedida>
+<dte:Descripcion>Producto Demo A</dte:Descripcion>
+<dte:PrecioUnitario>50.00</dte:PrecioUnitario>
+<dte:Precio>100.00</dte:Precio>
+<dte:Descuento>0.00</dte:Descuento>
+<dte:Total>100.00</dte:Total>
+</dte:Item>
+<dte:Item BienOServicio="B" NumeroLinea="2">
+<dte:Cantidad>1.00</dte:Cantidad>
+<dte:UnidadMedida>UNI</dte:UnidadMedida>
+<dte:Descripcion>Producto Demo B</dte:Descripcion>
+<dte:PrecioUnitario>100.00</dte:PrecioUnitario>
+<dte:Precio>100.00</dte:Precio>
+<dte:Descuento>0.00</dte:Descuento>
+<dte:Total>100.00</dte:Total>
+</dte:Item>
+</dte:Items>
+<dte:Totales>
+<dte:GranTotal>200.00</dte:GranTotal>
+</dte:Totales>
+</dte:DatosEmision>
+</dte:DTE>
+</dte:SAT>
+</dte:GTDocumento>
