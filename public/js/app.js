@@ -144,12 +144,22 @@ function calcularTotal() {
   return items.reduce((suma, item) => suma + Number(item.cantidad) * Number(item.precioUnitario), 0);
 }
 
+// Formato "3,000.00": coma para miles, punto para decimales, sin importar el locale del navegador.
+const formateadorMoneda = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+function formatearMoneda(numero) {
+  return formateadorMoneda.format(numero);
+}
+
 function renderTotales() {
-  totalFacturaEl.textContent = calcularTotal().toFixed(2);
+  totalFacturaEl.textContent = formatearMoneda(calcularTotal());
   for (const item of items) {
     const subtotalEl = document.querySelector(`[data-subtotal="${item.id}"]`);
     if (subtotalEl) {
-      subtotalEl.textContent = (Number(item.cantidad) * Number(item.precioUnitario)).toFixed(2);
+      subtotalEl.textContent = formatearMoneda(Number(item.cantidad) * Number(item.precioUnitario));
     }
   }
 }
@@ -168,7 +178,7 @@ function renderItems() {
         <input type="text" inputmode="decimal" class="w-full px-2 py-1 text-sm border-0 focus:ring-0" placeholder="0.00"
           value="${item.precioUnitario}" data-campo="precioUnitario" data-decimal="true" />
       </div>
-      <span class="col-span-2 text-sm text-right">Q<span data-subtotal="${item.id}">0.00</span></span>
+      <span class="col-span-2 text-sm text-right">Q <span data-subtotal="${item.id}">0.00</span></span>
       <button type="button" class="col-span-1 text-red-500 hover:text-red-700" data-eliminar="${item.id}">✕</button>
     </div>`,
     )
