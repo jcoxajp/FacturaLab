@@ -1,4 +1,5 @@
 import { certificarFactura } from '../services/certificacionService.js';
+import { obtenerHistorial } from '../services/historialCertificaciones.js';
 import { ArchivoInvalidoError } from '../errors/ArchivoInvalidoError.js';
 
 export async function crearFacturaCertificada(req, res) {
@@ -16,3 +17,8 @@ export async function crearFacturaCertificada(req, res) {
   res.set('X-Fecha-Certificacion', datosCertificacion.fechaCertificacion);
   res.type('application/pdf').send(pdf);
 }
+
+export function obtenerHistorialController(req, res) {
+  res.json({ historial: obtenerHistorial() });
+}
+
