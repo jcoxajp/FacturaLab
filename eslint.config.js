@@ -16,6 +16,14 @@ export default [
     },
   },
   {
+    files: ['public/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
+  {
     ignores: ['node_modules/', 'coverage/'],
   },
 ];
