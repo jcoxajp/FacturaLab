@@ -1,6 +1,7 @@
 import { leerFacturaXml } from './xmlReader.js';
 import { certificarDocumento } from './certificadorClient.js';
 import { generarPdfFactura } from './pdfGenerator.js';
+import { registrarCertificacion } from './historialCertificaciones.js';
 
 /**
  * Orquesta el flujo completo: leer XML -> certificar -> generar PDF.
@@ -16,6 +17,8 @@ export async function certificarFactura(xmlString, opciones) {
   const datosFactura = leerFacturaXml(xmlString);
   const datosCertificacion = await certificarDocumento(datosFactura, opciones);
   const pdf = await generarPdfFactura(datosFactura, datosCertificacion);
+
+  registrarCertificacion(datosFactura, datosCertificacion);
 
   return { datosFactura, datosCertificacion, pdf };
 }

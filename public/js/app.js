@@ -331,10 +331,69 @@ async function enviarACertificar() {
 
     el('resultado-cargando').hidden = true;
     el('resultado-exito').hidden = false;
+    await cargarHistorial();
   } catch (error) {
     el('res-error-mensaje').textContent = error.message;
     el('resultado-cargando').hidden = true;
     el('resultado-error').hidden = false;
+  }
+}
+
+function renderHistorial(historial) {
+  const historialContadorEl = el('historial-contador');
+  const historialVacioEl = el('historial-vacio');
+  const historialTablaContenedorEl = el('historial-tabla-contenedor');
+  const historialListaEl = el('historial-lista');
+
+  if (!historialContadorEl || !historialVacioEl || !historialTablaContenedorEl || !historialListaEl) {
+    return;
+  }
+
+  const totalRegistros = historial.length;
+  historialContadorEl.textContent = `${totalRegistros} en memoria`;
+
+  if (totalRegistros === 0) {
+    historialVacioEl.hidden = false;
+    historialTablaContenedorEl.hidden = true;
+    historialListaEl.innerHTML = '';
+    return;
+  }
+
+  historialVacioEl.hidden = true;
+  historialTablaContenedorEl.hidden = false;
+
+  historialListaEl.innerHTML = historial
+    .map(
+      (item) => `
+    <tr class="hover:bg-slate-50 transition-colors">
+      <td class="py-2.5 px-3 whitespace-nowrap text-slate-500">${formatearFecha(item.fechaCertificacion)}</td>
+      <td class="py-2.5 px-3">
+        <div class="font-medium text-slate-800">${escapeHtml(item.nombreEmisor)}</div>
+        <div class="text-[11px] text-slate-400">NIT: ${escapeHtml(item.nitEmisor)}</div>
+      </td>
+      <td class="py-2.5 px-3">
+        <div class="font-medium text-slate-800">${escapeHtml(item.nombreReceptor)}</div>
+        <div class="text-[11px] text-slate-400">${escapeHtml(item.idReceptor)}</div>
+      </td>
+      <td class="py-2.5 px-3 text-right font-semibold text-slate-700 whitespace-nowrap">
+        Q ${formatearMoneda(item.granTotal)}
+      </td>
+      <td class="py-2.5 px-3 text-right font-mono text-[11px] text-slate-500" title="${escapeHtml(item.numeroAutorizacion)}">
+        <span class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">${escapeHtml(item.serie)}-${escapeHtml(item.numeroDte)}</span>
+      </td>
+    </tr>`,
+    )
+    .join('');
+}
+
+async function cargarHistorial() {
+  try {
+    const respuesta = await fetch('/api/facturas/historial');
+    if (!respuesta.ok) return;
+    const datos = await respuesta.json();
+    renderHistorial(datos.historial || []);
+  } catch (error) {
+    console.error('Error al cargar historial de facturas:', error);
   }
 }
 
@@ -393,3 +452,4 @@ el('btn-certificar').addEventListener('click', () => {
 
 agregarItem();
 irAPaso(1);
+cargarHistorial();

@@ -140,6 +140,33 @@
         </button>
       </div>
     </section>
+
+    <section id="seccion-historial" class="bg-white rounded-lg shadow p-6 mt-8 space-y-4">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h2 class="text-lg font-semibold text-slate-700">Últimas facturas certificadas</h2>
+        <span id="historial-contador" class="text-xs font-medium bg-indigo-50 text-indigo-700 px-2.5 py-0.5 rounded-full">0 en memoria</span>
+      </div>
+
+      <div id="historial-vacio" class="text-center py-6 text-slate-400 text-sm">
+        No hay facturas certificadas en esta sesión.
+      </div>
+
+      <div id="historial-tabla-contenedor" class="overflow-x-auto" hidden>
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b text-slate-500 font-semibold uppercase tracking-wider bg-slate-50">
+              <th class="py-2 px-3">Fecha</th>
+              <th class="py-2 px-3">Emisor</th>
+              <th class="py-2 px-3">Receptor</th>
+              <th class="py-2 px-3 text-right">Total</th>
+              <th class="py-2 px-3 text-right">Autorización</th>
+            </tr>
+          </thead>
+          <tbody id="historial-lista" class="divide-y divide-slate-100 font-normal">
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 
   <script src="/js/app.js"></script>
